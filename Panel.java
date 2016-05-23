@@ -7,9 +7,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Panel extends JPanel {
 	
-	public Bot Orange = new Bot(100, Frame.HEIGHT / 2, Color.ORANGE);
-	public Bot Blue = new Bot(100, Frame.HEIGHT / 2 - 20, Color.BLUE);
-	
+	// Draw the buttons on screen
 	private void drawButtons(Graphics g) {
 		int buttonX = 100;
 		int buttonY = Frame.HEIGHT/2 - 10;
@@ -22,7 +20,8 @@ public class Panel extends JPanel {
 		}
 	}
 	
-	 public Panel() {
+	// Panel repaints every 0.1 seconds
+	public Panel() {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -39,6 +38,7 @@ public class Panel extends JPanel {
 	}
 
 	
+	// Paint everything
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

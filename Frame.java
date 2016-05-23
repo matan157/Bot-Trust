@@ -4,14 +4,19 @@ import javax.swing.JFrame;
 public class Frame extends JFrame{
 
 	private static final long serialVersionUID = 1L;
+	
+	// Dimensions
 	public static final int WIDTH = 1200;
 	public static final int HEIGHT = 400;
+	
+	// Frame has a panel
 	public static Panel panel;
 	
 	public Frame() {
 		initUI();
 	}
 	
+	// Initialize the screen
 	private void initUI() {
 		panel = new Panel();
 		add(panel);

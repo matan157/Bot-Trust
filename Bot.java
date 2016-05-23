@@ -4,19 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bot {
+    // Coordinates
 	private int x;
 	private int y;
-    private int currentButton;
-	public static final int WIDTH = 5;
-	public static final int HEIGHT = 5;
-    private boolean turn;
-    private boolean done;
-	private Color color;
+    
+    // General Properties
+    private Color color;
     private int instruction;
 	public List<InstructionPair> Instructions;
+    
+    // Bot dimensions
+    public static final int WIDTH = 5;
+	public static final int HEIGHT = 5;
+    
+    // Used for doNext()
+    private int currentButton;
+    private boolean turn;
+    private boolean done;
+    
+	// Constructor
 	public Bot(int x, int y, Color color) {
 		this.Instructions = new ArrayList<InstructionPair>();
-        currentButton = 1;
+        currentButton = 1; // Buttons are 1 - 100
         turn = false;
 		this.x = x;
 		this.y = y;
@@ -25,63 +34,56 @@ public class Bot {
         this.done = false;
 	}
 	
-	public int getX() {
-		return this.x;
-	}
+    // Getters
+	public int getX() {	return this.x; }
+	public int getY() {	return this.y; }
+	public Color getColor() { return this.color; }
+    public boolean getDone() { return this.done; }
 	
-	public int getY() {
-		return this.y;
-	}
-	
-	public Color getColor() {
-		return this.color;
-	}
-	
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
+    // Setters
+	public void setX(int x) { this.x = x; }
+	public void setY(int y) { this.y = y; }
+    public void setTurn(boolean turn) { this.turn = turn; }
     
-    public void setTurn(boolean turn) {
-        this.turn = turn;
-    }
-    
+    // Perform the next instruction
     public boolean doNext() {
         InstructionPair ip;
+        // If all instructions were done
         if(this.instruction >= Instructions.size() || Instructions.isEmpty()) {
             this.done = true;
         }
         
+        // If there are instructions left
         if(!this.done) {
             ip = Instructions.get(instruction);
             int button = this.currentButton;
             int iButton = ip.getButton();
             
+            // If the button you need is a higher number
             if(button < iButton) {
                 this.currentButton += 1;
                 this.x += 10;
+            // If the button you need is a lower number
             } else if (button > iButton) {
                 this.currentButton -= 1;
                 this.x -= 10;
+            // If you're on the button
             } else {
+                // If it is this Bot's turn to press the button
                 if(turn) {
                     instruction += 1;
+                    // If you're finished with your instructions
                     if (instruction >= Instructions.size())
                         this.done = true;
                     return true;
                 }
             }
         }
+        // If you didn't do anything, moved up or down.
         return false;
     }
     
-    public boolean getDone() {
-        return this.done;
-    }
-    
+    // Reset the Bot
     public void reset(int x, int y) {
         this.Instructions.clear();
         this.done = false;
@@ -91,6 +93,7 @@ public class Bot {
         this.y = y;
     }
 	
+    // Draw method
 	public void drawBot(Graphics g) {
 		g.setColor(this.color);
 		g.fillRect(this.x, this.y, WIDTH, HEIGHT);
