@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.lang.Thread;
 
 import javax.swing.JPanel;
 
@@ -21,6 +22,22 @@ public class Panel extends JPanel {
 		}
 	}
 	
+	 public Panel() {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException exp) {
+					}
+					repaint();
+				}
+			}
+		});
+		t.start();
+	}
+
 	
 	@Override
 	public void paintComponent(Graphics g) {
@@ -28,6 +45,6 @@ public class Panel extends JPanel {
 		drawButtons(g);
 		Main.drawBots(g);
 	}
-
+	
 	
 }

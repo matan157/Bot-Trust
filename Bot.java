@@ -10,7 +10,9 @@ public class Bot {
 	public static final int WIDTH = 5;
 	public static final int HEIGHT = 5;
     private boolean turn;
+    private boolean done;
 	private Color color;
+    private int instruction;
 	public List<InstructionPair> Instructions;
 	public Bot(int x, int y, Color color) {
 		this.Instructions = new ArrayList<InstructionPair>();
@@ -19,6 +21,8 @@ public class Bot {
 		this.x = x;
 		this.y = y;
 		this.color = color;
+        this.instruction = 0;
+        this.done = false;
 	}
 	
 	public int getX() {
@@ -46,26 +50,47 @@ public class Bot {
     }
     
     public boolean doNext() {
-        if(Instructions.isEmpty()) { return false; }
-        InstructionPair ip = Instructions.get(0);
-        int iButton = ip.getButton();
-        if(ip != null) {
-            if(iButton < this.currentButton) {
-                this.currentButton--;
-                this.x -= 10;
-            } else if (iButton > this.currentButton) {
-                this.currentButton++;
-                this.x += 10;
-            } else {
-                if(turn){
-                    Instructions.remove(0);
-                    return true;
+        InstructionPair ip;
+        if(!done) {
+            if(instruction >= Instructions.size())
+                ip = Instructions.get(Instructions.size() - 1);
+            else
+                ip = Instructions.get(instruction);
+            int iButton = ip.getButton();
+            if(ip != null) {
+                if(iButton < this.currentButton) {
+                    this.currentButton--;
+                    this.x -= 10;
+                } else if (iButton > this.currentButton) {
+                    this.currentButton++;
+                    this.x += 10;
+                } else {
+                    if(turn){
+                        instruction++;
+                        if(instruction >= Instructions.size())
+                            this.done = true;
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
         }
         // If it gets here, it does nothing
         return false;
         
+    }
+    
+    public boolean getDone() {
+        return this.done;
+    }
+    
+    public void reset(int x, int y) {
+        this.Instructions = new ArrayList<InstructionPair>();
+        this.done = false;
+        this.instruction = 0;
+        this.x = x;
+        this.y = y;
     }
 	
 	public void drawBot(Graphics g) {

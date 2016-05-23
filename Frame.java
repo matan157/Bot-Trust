@@ -6,13 +6,15 @@ public class Frame extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public static final int WIDTH = 1200;
 	public static final int HEIGHT = 400;
+	public static Panel panel;
 	
 	public Frame() {
 		initUI();
 	}
 	
 	private void initUI() {
-		add(new Panel());
+		panel = new Panel();
+		add(panel);
 		
 		setTitle("Bot Trust");
 		setSize(WIDTH, HEIGHT);
