@@ -16,7 +16,7 @@ public class Main implements Runnable{
 	
 	public static Frame frame;
 	
-	public static final int DELAY = 300;
+	public static final int DELAY = 100;
 	
 	public Main() {
 		
