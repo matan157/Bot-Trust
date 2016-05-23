@@ -51,34 +51,31 @@ public class Bot {
     
     public boolean doNext() {
         InstructionPair ip;
-        if(!done) {
-            if(instruction >= Instructions.size())
-                ip = Instructions.get(Instructions.size() - 1);
-            else
-                ip = Instructions.get(instruction);
+        if(this.instruction >= Instructions.size() || Instructions.isEmpty()) {
+            this.done = true;
+        }
+        
+        if(!this.done) {
+            ip = Instructions.get(instruction);
+            int button = this.currentButton;
             int iButton = ip.getButton();
-            if(ip != null) {
-                if(iButton < this.currentButton) {
-                    this.currentButton--;
-                    this.x -= 10;
-                } else if (iButton > this.currentButton) {
-                    this.currentButton++;
-                    this.x += 10;
-                } else {
-                    if(turn){
-                        instruction++;
-                        if(instruction >= Instructions.size())
-                            this.done = true;
-                        return true;
-                    } else {
-                        return false;
-                    }
+            
+            if(button < iButton) {
+                this.currentButton += 1;
+                this.x += 10;
+            } else if (button > iButton) {
+                this.currentButton -= 1;
+                this.x -= 10;
+            } else {
+                if(turn) {
+                    instruction += 1;
+                    if (instruction >= Instructions.size())
+                        this.done = true;
+                    return true;
                 }
             }
         }
-        // If it gets here, it does nothing
         return false;
-        
     }
     
     public boolean getDone() {
@@ -86,8 +83,9 @@ public class Bot {
     }
     
     public void reset(int x, int y) {
-        this.Instructions = new ArrayList<InstructionPair>();
+        this.Instructions.clear();
         this.done = false;
+        this.currentButton = 1;
         this.instruction = 0;
         this.x = x;
         this.y = y;

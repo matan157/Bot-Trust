@@ -12,8 +12,11 @@ public class Main implements Runnable{
 	public static Bot Orange;
 	public static Bot Blue;
 	public static int turn; // 0 == Orange, 1 == Blue
+	public static String currentSteps = "Steps: ";
 	
 	public static Frame frame;
+	
+	public static final int DELAY = 300;
 	
 	public Main() {
 		
@@ -47,11 +50,22 @@ public class Main implements Runnable{
 							Blue.Instructions.add(new InstructionPair(bot, button));
 						}
 					}
+					for(InstructionPair ip : Instructions) {
+						System.out.println("Bot: " + ip.getBot() + " Button: " + ip.getButton());
+					}
+					//for(InstructionPair Oip : Orange.Instructions) {
+					//	System.out.println("Bot: " + Oip.getBot() + " Button: " + Oip.getButton());
+					//}
 					main.simulate();
 					Instructions.clear();
 					Orange.reset(100, Frame.HEIGHT / 2);
 					Blue.reset(100, Frame.HEIGHT / 2 - 20);
 					System.out.println("==================================");
+					try {
+						Thread.sleep(2000);                 
+					} catch(InterruptedException ex) {
+						Thread.currentThread().interrupt();
+					}
 				}
 				
 				input.close();
@@ -60,7 +74,7 @@ public class Main implements Runnable{
 			}
 	}
 	
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) {
 		Main m = new Main();
 		m.run();
     }
@@ -70,6 +84,9 @@ public class Main implements Runnable{
 		Blue.drawBot(g);
 	}
 	
+	public static void drawSteps(Graphics g, String s) {
+		g.drawString(s, Frame.WIDTH / 2 - 20, 50);
+	}
 	public void simulate()  {
 		int instruction = 0;
 		InstructionPair ip = Instructions.get(instruction);
@@ -82,7 +99,9 @@ public class Main implements Runnable{
 		}
 		
 		int step = 1;
+		
 		while(true) {
+			this.currentSteps = "Steps: " + step;
 			System.out.println("Step No: " + step);
 			// IF the bot clicked a button, it will 
 			boolean oClicked = Orange.doNext();
@@ -103,7 +122,7 @@ public class Main implements Runnable{
 			}
 			step++;
 			try {
-    			Thread.sleep(500);                 
+    			Thread.sleep(DELAY);                 
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}

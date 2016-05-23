@@ -44,6 +44,7 @@ public class Panel extends JPanel {
 		super.paintComponent(g);
 		drawButtons(g);
 		Main.drawBots(g);
+		Main.drawSteps(g, Main.currentSteps);
 	}
 	
 	
