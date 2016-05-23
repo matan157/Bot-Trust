@@ -46,15 +46,16 @@ public class Bot {
     }
     
     public boolean doNext() {
+        if(Instructions.isEmpty()) { return false; }
         InstructionPair ip = Instructions.get(0);
         int iButton = ip.getButton();
         if(ip != null) {
             if(iButton < this.currentButton) {
                 this.currentButton--;
-                this.x = this.x - 10;
+                this.x -= 10;
             } else if (iButton > this.currentButton) {
                 this.currentButton++;
-                this.x = this.x + 10;
+                this.x += 10;
             } else {
                 if(turn){
                     Instructions.remove(0);
@@ -62,7 +63,7 @@ public class Bot {
                 }
             }
         }
-        
+        // If it gets here, it does nothing
         return false;
         
     }
